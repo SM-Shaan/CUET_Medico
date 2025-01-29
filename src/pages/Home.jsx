@@ -10,6 +10,7 @@ import {
   FaAmbulance,
   FaBookMedical,
 } from "react-icons/fa";
+import Footer from "../components/Footer";
 
 const Home = () => {
   const doctors = [
@@ -37,6 +38,16 @@ const Home = () => {
     },
   ];
 
+  const images = [
+    "https://scontent.fdac181-1.fna.fbcdn.net/v/t39.30808-6/464390278_580605870987024_936308906430505225_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=833d8c&_nc_ohc=v3q_e_e8_CkQ7kNvgFiT46G&_nc_zt=23&_nc_ht=scontent.fdac181-1.fna&_nc_gid=AL6EUaVPeY9S_y0KT9A6fpw&oh=00_AYCGlz4c4bD7hHozaVc_thagSuyARGeEguWD0sLJaZXSKw&oe=679FBD96",
+    "https://scontent.fdac181-1.fna.fbcdn.net/v/t39.30808-6/464347044_580605917653686_4330466770031320238_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=833d8c&_nc_ohc=NVe7zV7C7A0Q7kNvgGxT901&_nc_zt=23&_nc_ht=scontent.fdac181-1.fna&_nc_gid=AnmUfgprW1iFt8DcXUYqnto&oh=00_AYCOGX_2AhonahVexMuh96LnLuBEy05_FGPmjCyxLQhiXw&oe=679FD023",
+    "https://scontent.fdac181-1.fna.fbcdn.net/v/t39.30808-6/464527332_580605967653681_3759467621515116375_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=833d8c&_nc_ohc=cF-c8AyStF8Q7kNvgF4nvWX&_nc_zt=23&_nc_ht=scontent.fdac181-1.fna&_nc_gid=AgoOj27dEH1NWA37E8chqZX&oh=00_AYAqtjvxLUxjU_NndT9UyAX76Un-t_aopcDVZnsneplORA&oe=679FB629",
+    "https://scontent.fdac181-1.fna.fbcdn.net/v/t39.30808-6/464326819_580606014320343_490781394427630182_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_ohc=iFKr8ZncR2wQ7kNvgHVlFf5&_nc_zt=23&_nc_ht=scontent.fdac181-1.fna&_nc_gid=Ae_HBBXIQkFhE4IYywKlra3&oh=00_AYDSUSR6zzpVIZcSHdymsRQNKQkt8z-K_4dG7AubujwQCQ&oe=679FB5AD",
+    "https://scontent.fdac181-1.fna.fbcdn.net/v/t39.30808-6/464513376_580606107653667_4302626035676591555_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=833d8c&_nc_ohc=y6ACd8D9igEQ7kNvgFnqPnT&_nc_zt=23&_nc_ht=scontent.fdac181-1.fna&_nc_gid=A5zjtnDYUiSBEsAEVvjkdIq&oh=00_AYCFBnUATwU1C9Xzpye6v3bn5kP5hRjQ_bc3V8TaOcmnrQ&oe=679FC93A",
+    "https://scontent.fdac181-1.fna.fbcdn.net/v/t39.30808-6/464290129_580606150986996_8403072592134918958_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=833d8c&_nc_ohc=1qyxpScKPKAQ7kNvgHcW6Fv&_nc_zt=23&_nc_ht=scontent.fdac181-1.fna&_nc_gid=AETtnns58BRnZ8BEQ0joCOV&oh=00_AYA6EBGYzmQ8ngzwj10DhBRG87SYFnFDLIK3xHawe2veVw&oe=679FCBC8",
+    "https://scontent.fdac181-1.fna.fbcdn.net/v/t39.30808-6/464390278_580605870987024_936308906430505225_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=833d8c&_nc_ohc=v3q_e_e8_CkQ7kNvgFiT46G&_nc_zt=23&_nc_ht=scontent.fdac181-1.fna&_nc_gid=AL6EUaVPeY9S_y0KT9A6fpw&oh=00_AYCGlz4c4bD7hHozaVc_thagSuyARGeEguWD0sLJaZXSKw&oe=679FBD96",
+    "https://scontent.fdac181-1.fna.fbcdn.net/v/t39.30808-6/464347044_580605917653686_4330466770031320238_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=833d8c&_nc_ohc=NVe7zV7C7A0Q7kNvgGxT901&_nc_zt=23&_nc_ht=scontent.fdac181-1.fna&_nc_gid=AnmUfgprW1iFt8DcXUYqnto&oh=00_AYCOGX_2AhonahVexMuh96LnLuBEy05_FGPmjCyxLQhiXw&oe=679FD023",
+  ];
 
 
   return (
@@ -95,17 +106,15 @@ const Home = () => {
 
               {/* Sliding Doctor Cards */}
               <div className="overflow-hidden relative">
-                <div className="flex animate-slide">
-                  {doctors.map((doctor, index) => (
-                    <div key={index} className="flex-shrink-0 w-full md:w-auto bg-gray-50 p-6 rounded-lg shadow-lg mx-2 transition-all duration-300 ease-in-out transform hover:scale-105">
-                      <div className="text-center md:text-left">
-                        <h3 className="text-lg font-semibold text-gray-800">{doctor.name}</h3>
-                        <p className="text-sm text-gray-600">{doctor.date}</p>
-                      </div>
-                      <span className="block text-center md:text-left text-gray-900 mt-2">{doctor.duration}</span>
-                    </div>
-                  ))}
-                </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {doctors.map((doctor, index) => (
+              <div key={index} className="p-4 border rounded-lg shadow-md">
+                <h3 className="text-xl font-semibold">{doctor.name}</h3>
+                <p className="text-gray-600">Date: {doctor.date}</p>
+                <p className="text-gray-600">Time: {doctor.duration}</p>
+              </div>
+            ))}
+          </div>
 
                 {/* Overlay Gradient */}
                 <div className="absolute inset-0 bg-gradient-to-r from-gray-300 opacity-50 rounded-lg"></div>
@@ -113,8 +122,24 @@ const Home = () => {
             </div>
           </div>
         </section>
-
       </div>
+
+      {/* Gallery Section */}
+      <section className="bg-white py-16 px-6">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl font-bold text-gray-800 text-center mb-6">Gallery</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+            {images.map((image, index) => (
+              <div key={index} className="relative group overflow-hidden rounded-lg shadow-md">
+                <img src={image} alt="Medical Center" className="w-full h-48 object-cover transition-transform duration-300 transform group-hover:scale-110" />
+                <div className="absolute inset-0 bg-black bg-opacity-50 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <span className="text-white text-lg font-semibold">View</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Latest Health Articles Section */}
       <section className="py-16">
@@ -165,6 +190,40 @@ const Home = () => {
             >
               See More
             </button>
+          </div>
+        </div>
+      </section>
+
+       {/* News and Updates Section */}
+      <section className="bg-gray-50 py-16 px-6">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl font-bold text-gray-800 text-center mb-6">News & Updates</h2>
+          <div className="space-y-4">
+            <div className="p-6 border rounded-lg shadow-md bg-white hover:shadow-lg transition-shadow">
+              <h3 className="text-xl font-semibold">New Specialist Doctor Available</h3>
+              <p className="text-gray-600">Dr. Emily Watson, a cardiology expert, is now available for consultations.</p>
+            </div>
+            <div className="p-6 border rounded-lg shadow-md bg-white hover:shadow-lg transition-shadow">
+              <h3 className="text-xl font-semibold">Flu Vaccination Drive</h3>
+              <p className="text-gray-600">Free flu vaccinations will be provided from Jan 10 - Jan 20.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="bg-white py-16 px-6">
+        <div className="max-w-7xl mx-auto text-center">
+          <h2 className="text-3xl font-bold text-gray-800 mb-6">Testimonials</h2>
+          <div className="space-y-6">
+            <blockquote className="p-6 border-l-4 border-blue-600 bg-gray-100 rounded-lg shadow-md">
+              <p className="text-gray-700 italic">"The doctors at CUET Medical Center are professional and caring. I had a great experience!"</p>
+              <footer className="text-gray-600 mt-2">— Sarah Rahman</footer>
+            </blockquote>
+            <blockquote className="p-6 border-l-4 border-blue-600 bg-gray-100 rounded-lg shadow-md">
+              <p className="text-gray-700 italic">"Quick service and friendly staff. Highly recommended!"</p>
+              <footer className="text-gray-600 mt-2">— Ahmed Hossain</footer>
+            </blockquote>
           </div>
         </div>
       </section>
@@ -220,13 +279,31 @@ const Home = () => {
               </div>
               {/* Floating Element */}
               <div className="absolute top-0 right-0 w-24 h-24 bg-yellow-300 bg-opacity-40 rounded-full blur-lg animate-spin-slow"></div>
-            </section>
-
+            </section>            
           </div>
         </div>
       </section>
+      {/* FAQs Section */}
+      {/* FAQs Section */}
+      <section className="bg-gray-50 py-16 px-6">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl font-bold text-gray-800 text-center mb-6">FAQs</h2>
+          <div className="space-y-4">
+            <div className="p-6 border rounded-lg shadow-md bg-white hover:shadow-lg transition-shadow">
+              <h3 className="text-xl font-semibold">What are the operating hours?</h3>
+              <p className="text-gray-600">CUET Medical Center is open from 8:00 AM to 8:00 PM, Monday to Saturday.</p>
+            </div>
+            <div className="p-6 border rounded-lg shadow-md bg-white hover:shadow-lg transition-shadow">
+              <h3 className="text-xl font-semibold">Do I need an appointment?</h3>
+              <p className="text-gray-600">Walk-ins are welcome, but we recommend booking an appointment for quicker service.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <Footer />
     </div>
   );
 };
 
 export default Home;
+
