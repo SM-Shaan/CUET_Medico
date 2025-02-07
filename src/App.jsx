@@ -1,11 +1,39 @@
+
+
+import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import "./index.css";
 
 function App() {
+  const [items, setItems] = useState([]);
+  const [error, setError] = useState(null); // Added state for errors
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //         const res = await fetch('http://localhost:3000/api/appointmentform');
+          
+  //         if (!res.ok) {
+  //             throw new Error(`HTTP error! Status: ${res.status}`);
+  //         }
+          
+  //         const data = await res.json();  // This will now be a JSON response
+  //         console.log(data);  // { message: "Server is running!" }
+  //         setItems([data.message]);  // Set the message in your state or UI
+  //     } catch (error) {
+  //         console.error("Error fetching data:", error);
+  //         setError(error.message);  // Set the error message in state
+  //     }
+  // };
+  
+
+  //   fetchData(); // Call the async function
+  // }, []);
   return (
     <div>
       <Navbar />
+      {/* {error && <div className="error">Error: {error}</div>}   */}
       <Outlet />  {/* This ensures pages are rendered inside App */}
     </div>
   );

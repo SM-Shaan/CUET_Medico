@@ -1,40 +1,80 @@
-import { useState } from 'react';
 import { Calendar, Clock } from 'lucide-react';
-
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 const Appointments = () => {
   const [selectedDate, setSelectedDate] = useState('');
-  const [selectedTime, setSelectedTime] = useState('');
+  const [selectedTime, setSelectedTime] = useState(null);
+  // const [selectedStartTime, setSelectedStartTime] = useState('');
+  // const [selectedEndTime, setSelectedEndTime] = useState('');
+
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [studentInfo, setStudentInfo] = useState({
+    studentName: '',
     studentID: '',
-    bookletID: '',
+    // bookletID: '',
     department: '',
     hall: '',
     batchNo: '',
     email: '',
-    phone: '',
+    // phone: '',
   });
   const [appointmentType, setAppointmentType] = useState('');
   const [transferType, setTransferType] = useState('');
 
   const doctors = [
-    { id: 1, name: 'Dr. Sarah Johnson', specialty: 'General Medicine', image: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=200&h=200' },
-    { id: 2, name: 'Dr. Michael Chen', specialty: 'Cardiology', image: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=200&h=200' },
-    { id: 3, name: 'Dr. Emily Brown', specialty: 'Psychiatry', image: 'https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&q=80&w=200&h=200' },
+    { id: 1, name: 'Rupona Das', designation: 'Medicine', image: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=200&h=200' },
+    { id: 2, name: 'Sadia Sabrina', designation: 'Medicine', image: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=200&h=200' },
+    { id: 3, name: 'Abul Hashem', designation: 'Gastroenterologist', image: 'https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&q=80&w=200&h=200' },
   ];
+  
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const appointmentDetails = {
-      studentInfo,
-      doctor: selectedDoctor,
-      date: selectedDate,
-      time: selectedTime,
-      appointmentType,
-      transferType,
-    };
-    console.log('Appointment Details:', appointmentDetails);
+  const handleTimeSelection = (timeSlot) => {
+    setSelectedTime(timeSlot);
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const appointmentDetails = {
+        studentName: studentInfo.studentName,
+        studentID: studentInfo.studentID,
+        studentEmail: studentInfo.email,
+        studentDepartment: studentInfo.department,
+        studentHall: studentInfo.hall,
+        studentBatchNo: studentInfo.batchNo,
+        doctorId: selectedDoctor.id,
+        doctorName: selectedDoctor.name,
+        doctorDesignation: selectedDoctor.designation,
+        appointmentDay: selectedDate,
+        selectedTime: selectedTime
+    };
+
+    console.log(appointmentDetails);
+
+    try {
+        const response = await fetch('http://localhost:5000/api/appointmentform', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(appointmentDetails),
+        });
+
+        const data = await response.json();
+        console.log(data);
+
+        if (response.ok) {
+            alert(data.message);
+            // navigate('/appointments');
+        } else {
+            alert(data.message);
+        }
+    } catch (error) {
+        console.error('Error booking appointment:', error);
+        alert('An error occurred while booking your appointment.');
+    }
+};
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -59,13 +99,13 @@ const Appointments = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1">Booklet ID</label>
+                  {/* <label className="block text-sm font-medium mb-1">Booklet ID</label>
                   <input
                     type="text"
                     value={studentInfo.bookletID}
                     onChange={(e) => setStudentInfo({ ...studentInfo, bookletID: e.target.value })}
                     className="w-full p-2 border rounded-md"
-                  />
+                  /> */}
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-1">Department</label>
@@ -103,7 +143,7 @@ const Appointments = () => {
                     className="w-full p-2 border rounded-md"
                   />
                 </div>
-                <div>
+                {/* <div>
                   <label className="block text-sm font-medium mb-1">Phone Number</label>
                   <input
                     type="tel"
@@ -111,7 +151,7 @@ const Appointments = () => {
                     onChange={(e) => setStudentInfo({ ...studentInfo, phone: e.target.value })}
                     className="w-full p-2 border rounded-md"
                   />
-                </div>
+                </div> */}
               </div>
             </div>
 
@@ -129,7 +169,7 @@ const Appointments = () => {
                 <option value="">Choose a doctor</option>
                 {doctors.map(doctor => (
                   <option key={doctor.id} value={doctor.id}>
-                    {doctor.name} - {doctor.specialty}
+                    {doctor.name} - {doctor.designation}
                   </option>
                 ))}
               </select>
@@ -143,7 +183,7 @@ const Appointments = () => {
                   <img src={selectedDoctor.image} alt={selectedDoctor.name} className="w-16 h-16 rounded-full object-cover" />
                   <div>
                     <h4 className="text-lg font-medium">{selectedDoctor.name}</h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">{selectedDoctor.specialty}</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">{selectedDoctor.designation}</p>
                   </div>
                 </div>
               </div>
@@ -168,51 +208,19 @@ const Appointments = () => {
               <div className="relative">
                 <select
                   value={selectedTime}
-                  onChange={(e) => setSelectedTime(e.target.value)}
+                  onChange={(e) => setSelectedTime(e.target.value)} // Update the selected time slot
                   className="w-full p-2 border rounded-md pl-10"
                 >
                   <option value="">Choose a time</option>
-                  <option value="09:00">09:00 AM</option>
-                  <option value="10:00">10:00 AM</option>
-                  <option value="11:00">11:00 AM</option>
-                  <option value="14:00">02:00 PM</option>
-                  <option value="15:00">03:00 PM</option>
-                  <option value="16:00">04:00 PM</option>
+                  <option value="9 AM - 4 PM">9 AM - 4 PM</option>
+                  <option value="3 PM - 9 PM">3 PM - 9 PM</option>
+                  <option value="9 PM - 9 AM">9 PM - 9 AM</option>
                 </select>
+
+
                 <Clock className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
               </div>
             </div>
-
-            {/* Appointment Type and Transfer Type */}
-            <div className="space-y-4 mt-6">
-              <div>
-                <label className="block text-sm font-medium mb-1">Appointment Type</label>
-                <select
-                  value={appointmentType}
-                  onChange={(e) => setAppointmentType(e.target.value)}
-                  className="w-full p-2 border rounded-md"
-                >
-                  <option value="">Choose Appointment Type</option>
-                  <option value="Consultation">Consultation</option>
-                  <option value="Follow-up">Follow-up</option>
-                  <option value="Emergency">Emergency</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-1">Transfer Type</label>
-                <select
-                  value={transferType}
-                  onChange={(e) => setTransferType(e.target.value)}
-                  className="w-full p-2 border rounded-md"
-                >
-                  <option value="">Choose Transfer Type</option>
-                  <option value="Online">Online</option>
-                  <option value="Offline">Offline</option>
-                </select>
-              </div>
-            </div>
-
             <button
               type="submit"
               className="w-full bg-primary text-white py-2 rounded-md hover:bg-primary/90 transition-colors"

@@ -22,7 +22,7 @@ app.use(cookieParser());
 // const uri = "mongodb+srv://sarthokali0427:ftF4xz8A8HiAyWTK@cluster0.vsegh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 const uri = "mongodb+srv://towshin:sabit11tushi05@cluster0.w4gv9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
-const client = new MongoClient(uri, {
+const client = new MongoClient(uri, { 
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,

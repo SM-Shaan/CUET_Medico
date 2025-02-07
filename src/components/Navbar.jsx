@@ -1,15 +1,18 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { Stethoscope } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
 import { FaBarsStaggered, FaXmark } from "react-icons/fa6";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+
+// const navigate = useNavigate();
 
 
-const Navbar = ({ }) => {
+const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSticky, setSticky] = useState(false);
 
   const { loginWithRedirect, isAuthenticated, user, logout } = useAuth0();
+  const navigate = useNavigate();
 
 //   const namespace = 'https://myapp.example.com/';
 //   const userRoles = user?.[`${namespace}roles`] || [];
@@ -20,7 +23,7 @@ const Navbar = ({ }) => {
 
   useEffect(() => {
     const handleScroll = () => {
-      navigate('/home', { replace: true });
+      // navigate('/home', { replace: true });
       const offset = window.scrollY;
       setSticky(offset > 0);
     };
@@ -28,7 +31,7 @@ const Navbar = ({ }) => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [navigate]);
 
   const navItems = [
     { path: "/home", title: "Home" },

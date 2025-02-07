@@ -1,3 +1,5 @@
+import tailwindcssAnimate from "tailwindcss-animate";
+
 /** @type {import('tailwindcss').Config} */
 export default {
   darkMode: ["class"],
@@ -40,7 +42,7 @@ export default {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
-        },
+        },                                                                                                                                        
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -49,5 +51,5 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
-}
+  plugins: [tailwindcssAnimate],
+};
