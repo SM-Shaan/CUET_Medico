@@ -37,6 +37,8 @@ async function connectDB() {
 
     const database = client.db("CUETMedico");
     const appointmentCollection = database.collection("appointmentform");
+    const doctorsCollection = database.collection("doctors");
+    const studentCollection = database.collection("students");
 
     // Post a new appointment
     app.post('/api/appointmentform', async (req, res) => {
@@ -50,6 +52,61 @@ async function connectDB() {
             res.status(500).json({ message: "Error booking appointment" });
         }
     });
+
+    // Post a new doctor
+    app.post('/api/doctors', async (req, res) => {
+        const body = req.body;
+        console.log('Body:', body);
+        body.createdAt = new Date();
+        const result = await doctorsCollection.insertOne(body);
+        if (result.insertedId) {
+            res.status(200).json({ message: "Doctor successfully added", doctor: body });
+        } else {
+            res.status(500).json({ message: "Error adding doctor" });
+        }
+    });
+
+    // Post a new student
+    app.post('/api/students', async (req, res) => {
+        const body = req.body;
+        console.log('Body:', body);
+        body.createdAt = new Date();
+        const result = await studentCollection.insertOne(body);
+        if (result.insertedId) {
+            res.status(200).json({ message: "Student successfully added", student: body });
+        } else {
+            res.status(500).json({ message: "Error adding student" });
+        }
+    });
+
+    //get all doctors
+    app.get("/all-doctors",async(req,res) => {
+      const doctors = await doctorsCollection.find({}).toArray()
+      res.send(doctors);
+  })
+
+  // get all students
+  app.get("/all-students", async (req, res) => {
+    const students = await studentCollection.find({}).toArray();
+    res.send(students);
+  });
+
+  //get single doctor using id
+  app.get("/all-doctors/:id",async(req, res) => {
+    const id = req.params.id;
+    const doctorId = await doctorsCollection.findOne({
+      _id: new ObjectId(id)
+    })
+    res.send(doctorId)
+  })
+
+  //delete a doctor
+  app.delete("/all-doctors/:id", async(req,res)=> {
+    const id = req.params.id;
+    const  filter = {_id: new ObjectId(id)}
+    const result = await doctorsCollection.deleteOne(filter);
+    res.send(result)
+  })
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
