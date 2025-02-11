@@ -118,9 +118,16 @@ async function connectDB() {
 }
 
 connectDB();
-
+const apiRoutes = require('./routes/apiRoutes');
+app.use('/api', apiRoutes);
 app.get('/', (req, res) => {
     res.send('Hello World!');
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
 });
 
 app.listen(port, () => {

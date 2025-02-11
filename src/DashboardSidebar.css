@@ -1,0 +1,13 @@
+.expandable-panel {
+
+    transition: max-height 0.3s ease;
+
+}
+
+
+
+.expandable-panel-content {
+
+    overflow: hidden;
+
+}

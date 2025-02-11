@@ -1,17 +1,30 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FaStethoscope, FaStar, FaSearch, FaCalendarAlt, FaHeart, FaPhoneAlt, FaEnvelope } from 'react-icons/fa';
 
-const doctors = [
-    { id: 1, name: 'Dr. John Doe', specialization: 'Cardiology', rating: 4, available: '9 AM - 5 PM', image: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=200&h=200' },
-    { id: 2, name: 'Dr. Jane Smith', specialization: 'Dermatology', rating: 5, available: '10 AM - 6 PM', image: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=200&h=200' },
-    { id: 3, name: 'Dr. Michael Chen', specialization: 'Cardiology', rating: 3, available: '8 AM - 4 PM', image: 'https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&q=80&w=200&h=200' },
-    { id: 4, name: 'Dr. Emily Brown', specialization: 'Psychiatry', rating: 4, available: '11 AM - 7 PM', image: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=200&h=200' },
-];
-
 const Doctors = () => {
+    const [doctors, setDoctors] = useState([]);
     const [search, setSearch] = useState('');
     const [selectedSpecialization, setSelectedSpecialization] = useState('');
     const [selectedRating, setSelectedRating] = useState(0);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchDoctors = async () => {
+            try {
+                const response = await fetch('http://localhost:5000/all-doctors');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                setDoctors(data);
+            } catch (error) {
+                console.error('Error fetching doctors:', error);
+            }
+        };
+
+        fetchDoctors();
+    }, []);
 
     const filteredDoctors = doctors.filter(doctor =>
         doctor.name.toLowerCase().includes(search.toLowerCase()) &&
@@ -35,7 +48,7 @@ const Doctors = () => {
                     <div className="text-center md:text-left md:w-1/2 -ml-10">
                         <h1 className="text-5xl font-bold mb-4 text-white">Meet Your Healthcare Provider</h1>
                         <p className="text-lg mb-6 text-gray-200">
-                            Find the right doctor for your needs. Whether it’s a routine check-up or an emergency, we’re here to help.
+                            Find the right doctor for your needs. Whether it's a routine check-up or an emergency, we're here to help.
                         </p>
                         <p className="text-sm mb-8 text-gray-300">Our experts are available for consultations today. Book your appointment now!</p>
                         <div className="space-x-4">
@@ -123,22 +136,36 @@ const Doctors = () => {
                     {filteredDoctors.map((doctor) => (
                         <div key={doctor.id} className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
                             <div className="flex flex-col items-center">
-                                <img src={doctor.image} alt={doctor.name} className="w-24 h-24 rounded-full mb-4 object-cover" />
+                                {doctor.image ? (
+                                    <img src={doctor.image} alt={doctor.name} className="w-24 h-24 rounded-full mb-4 object-cover" />
+                                ) : (
+                                    <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center mb-4">No Image</div>
+                                )}
                                 <h3 className="text-xl font-semibold mb-2">{doctor.name}</h3>
                                 <p className="text-sm text-gray-600 mb-2">{doctor.specialization}</p>
                                 <div className="flex items-center mb-2">
                                     <FaStar className="text-yellow-400" />
                                     <span className="ml-2">{doctor.rating} Stars</span>
                                 </div>
-                                <p className="text-sm text-gray-500 mb-2">
-                                    <FaCalendarAlt className="inline-block mr-1" /> Available: {doctor.available}
+                                <p className="text-sm text-gray-600 mb-2">
+                                    <FaCalendarAlt className="inline-block mr-1" /> Available:
+                                    <ul className="list-disc list-inside">
+                                        {doctor.weekdays.map(day => (
+                                            <li key={day}>
+                                                <strong>{day}:</strong> {doctor.availability[day]}
+                                            </li>
+                                        ))}
+                                    </ul>
                                 </p>
                                 <p className="text-sm text-gray-500 mb-4">
                                     <FaPhoneAlt className="inline-block mr-1" /> +1 234 567 890
                                     <br />
-                                    <FaEnvelope className="inline-block mr-1" /> example@clinic.com
+                                    <FaEnvelope className="inline-block mr-1" /> {doctor.email}
                                 </p>
-                                <button className="bg-blue-500 text-white py-2 px-6 rounded-full hover:bg-blue-600 transition-all duration-300">
+                                <button 
+                                    className="bg-blue-500 text-white py-2 px-6 rounded-full hover:bg-blue-600 transition-all duration-300"
+                                    onClick={() => navigate(`/doctor-profile/${doctor.id}`)}
+                                >
                                     View Profile
                                 </button>
                             </div>

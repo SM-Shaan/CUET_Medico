@@ -6,16 +6,15 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 
 // const navigate = useNavigate();
 
-
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSticky, setSticky] = useState(false);
 
   const { loginWithRedirect, isAuthenticated, user, logout } = useAuth0();
-  const navigate = useNavigate();
+  const navigate = useNavigate();      
 
-//   const namespace = 'https://myapp.example.com/';
-//   const userRoles = user?.[`${namespace}roles`] || [];
+  const namespace = 'https://5173/';
+  const userRoles = user?.[`${namespace}roles`] || []; 
 
   const handleMenuToggler = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -29,7 +28,7 @@ const Navbar = () => {
     };
     window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", handleScroll); 
     };
   }, [navigate]);
 
@@ -38,13 +37,13 @@ const Navbar = () => {
     // { path: "/my-job", title: "My Jobs", roles: ["Recruiter",] },
     { path: "/appointments", title: "Appointments" },
     // { path: "/doctors", title: "Doctors", roles: ["Doctor", "Admin"] },
-    { path: "/doctors", title: "Doctors" },
+    { path: "/doctors", title: "Doctors"},
     { path: "/blog", title: "Blog" },
     { path: "/contact", title: "Contact" },
     // { path: "/dashboard", title: "Admin Dashboard", roles: ["Admin"] },
   ];
 
-//   const hasRole = (roles) => roles?.some(role => userRoles.includes(role));
+  const hasRole = (roles) => roles?.some(role => userRoles.includes(role));
 
   return (
     <header className={`max-w-screen-2xl container mx-auto xl:px-24 px-4 top-0 left-0 right-0 ${isSticky ? "shadow-md bg-base-100 transition-all duration-300 ease-in-out" : ""}`}>
@@ -59,19 +58,19 @@ const Navbar = () => {
         <ul className="hidden md:flex gap-12">
           {isAuthenticated ? (
             <>
-              {/* {navItems.map(({ path, title, roles }) => ( */}
-              {navItems.map(({ path, title }) => (
-                // (!roles || hasRole(roles)) && (
+              {navItems.map(({ path, title, roles }) => (
+                (!roles || hasRole(roles)) && (
                   <li key={path} className="text-base text-primary">
                     <NavLink to={path} className={({ isActive }) => (isActive ? "active" : "")}>
                       {title}
                     </NavLink>
                   </li>
-                // )
+                )
               ))}
               <div className="">
                 <NavLink to='/dashmenu' className="text-xs text-slate-500">{user.name}</NavLink>
-                {/* <p className="text-[10px] text-gray-400">{userRoles.join(', ')}</p> */}
+                {/* <NavLink to='/dashmenu' className="text-xs text-slate-500">Dashboard</NavLink> */}
+                <p className="text-[10px] text-gray-400">{userRoles.join(', ')}</p>
               </div>
               <button className="bg-blue text-white p-2 hover:bg-purple-900 rounded-lg" onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>
                 Log Out
@@ -98,17 +97,16 @@ const Navbar = () => {
       <div className={`px-4 bg-black py-5 rounded-sm ${isMenuOpen ? "" : "hidden"}`}>
         <ul>
           {
-        //   navItems.map(({ path, title, roles }) => (
-          navItems.map(({ path, title }) => (
-            // (!roles || hasRole(roles)) && (
+          navItems.map(({ path, title, roles }) => (
+          // navItems.map(({ path, title }) => (
+            (!roles || hasRole(roles)) && (
               <li key={path} className="text-base text-white first:text-blue py-1">
                 <NavLink to={path} className={({ isActive }) => (isActive ? "active" : "")}>
                   {title}
                 </NavLink>
               </li>
-            // )
-          ))
-          }
+            )
+          ))}
           {isAuthenticated ? (
             <>
               <li className="text-base text-white py-1">
@@ -123,7 +121,7 @@ const Navbar = () => {
             <li className="text-base bg-black text-white py-1">
               <button className='text-black bg-blue' onClick={() => loginWithRedirect()}>Log In</button>
             </li>
-          )}
+          )} 
         </ul>
       </div>
     </header>
