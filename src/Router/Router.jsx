@@ -1,8 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
-import { useAuth0 } from '@auth0/auth0-react';
 import React from 'react';
-import { Navigate } from 'react-router-dom';
 import Home from "../pages/Home";
 import DashboardLayout from "../components/dashboard/DashboardLayout";
 import OnlineAppointmentPage from "../pages/AppointmentSchedulingPage";
@@ -31,47 +29,6 @@ import DoctorSettings from '../pages/doctor/DoctorSettings';
 import ReportsPage from "../pages/ReportsPage";
 import PrescriptionPage from "../pages/PrescriptionPage";
 
-
-const RoleBasedRoute = ({ children, allowedRoles }) => {
-  const role = useUserRole();
-
-  if (!role) {
-    return <p>Loading...</p>;
-  }
-
-  if (!allowedRoles.includes(role)) {
-    return <Navigate to="/unauthorized" />;
-  }
-
-  return children;
-};
-
-const useUserRole = () => {
-  const { user, getAccessTokenSilently } = useAuth0();
-  const [role, setRole] = useState(null);
-
-  useEffect(() => {
-    const fetchUserRole = async () => {
-      try {
-        const token = await getAccessTokenSilently();
-        const userRole = user['https://myapp.example.com/'][0];
-        setRole(userRole);
-      } catch (error) {
-        console.error('Error fetching user role:', error);
-      }
-    };
-
-    fetchUserRole();
-  }, [getAccessTokenSilently, user]);
-
-  return role;
-};
-
-const USER_ROLES = {
-  ADMIN: 'Admin',
-  DOCTOR: 'Doctor',
-  STUDENT: 'Student',
-};
 
 const router = createBrowserRouter([
   {
@@ -109,7 +66,8 @@ const router = createBrowserRouter([
       }, 
       { path: "/appointments", element: <OnlineAppointmentPage /> },
       { path: "/appointmentform", element: <Appointments /> },
-      { path: "/doctor", element: <Doctors /> },
+      { path: "/doctors", element: <Doctors /> },
+      { path: "/blog", element: <div className="min-h-screen flex items-center justify-center"><h1 className="text-3xl font-bold">Blog — Coming Soon</h1></div> },
       { path: "/contact", element: <ContactPage /> },
       { path: "/login", element: <Login /> },
       { path: "/signup", element: <SignupForm /> },
